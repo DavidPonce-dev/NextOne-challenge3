@@ -10,7 +10,7 @@ public record TopicDetailResponse(
         String title,
         String content,
         Instant createdAt,
-        User author
+        String authorName
         ) {
     public TopicDetailResponse(Topic t) {
         this(
@@ -18,7 +18,7 @@ public record TopicDetailResponse(
                 t.getTitle(),
                 t.getContent(),
                 t.getCreatedAt(),
-                t.getAuthor()
+                t.getAuthor().getUsername()
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.NextOne.Challenge3.Services.security;
+package com.NextOne.Challenge3.infra.security;
 
 import com.NextOne.Challenge3.domain.users.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -18,24 +18,28 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
+
     @Autowired
     private UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Obtener el token del header
-        var authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            var token = authHeader.replace("Bearer ", "");
-            var nombreUsuario = tokenService.getSubject(token); // extract username
-            if (nombreUsuario != null) {
-                // Token valido
-                var usuario = userRepository.findByLogin(nombreUsuario);
-                var authentication = new UsernamePasswordAuthenticationToken(usuario, null,
-                        usuario.getAuthorities()); // Forzamos un inicio de sesion
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+        var tokenJWT = recuperarToken(request);
+        if(tokenJWT != null){
+            var subject = tokenService.getSubject(tokenJWT);
+            var usuario = userRepository.findByUsername(subject);
+
+            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println("Logueado!!");
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String recuperarToken(HttpServletRequest request) {
+        var token = request.getHeader("Authorization");
+        if (token != null) return token.replace("Bearer ", "");
+        return null;
     }
 }

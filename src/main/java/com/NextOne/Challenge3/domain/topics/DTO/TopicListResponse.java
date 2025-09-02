@@ -9,14 +9,14 @@ public record TopicListResponse(
         Long id,
         String title,
         Instant createdAt,
-        User author
+        String authorName
 ) {
     public TopicListResponse(Topic t){
         this(
                 t.getId(),
                 t.getTitle(),
                 t.getCreatedAt(),
-                t.getAuthor()
+                t.getAuthor().getUsername()
         );
     }
 }

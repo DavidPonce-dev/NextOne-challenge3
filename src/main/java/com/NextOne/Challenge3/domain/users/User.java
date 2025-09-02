@@ -15,16 +15,16 @@ import java.util.List;
 @Table(name = "users")
 @Entity(name = "User")
 @NoArgsConstructor
-@Getter
 @AllArgsConstructor
+@Getter
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
-    private String clave;
+    private String username;
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,13 +32,11 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return clave;
-    }
+    public String getUsername() {return username;}
 
     @Override
-    public String getUsername() {
-        return login;
+    public String getPassword() {
+        return password;
     }
 
     @Override

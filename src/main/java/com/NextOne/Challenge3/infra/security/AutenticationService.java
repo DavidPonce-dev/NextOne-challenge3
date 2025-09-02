@@ -1,4 +1,4 @@
-package com.NextOne.Challenge3.Services.security;
+package com.NextOne.Challenge3.infra.security;
 
 import com.NextOne.Challenge3.domain.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,6 @@ public class AutenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username);
+        return userRepository.findByUsername(username);
     }
 }

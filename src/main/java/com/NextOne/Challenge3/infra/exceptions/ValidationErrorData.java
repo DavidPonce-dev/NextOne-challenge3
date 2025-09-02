@@ -1,4 +1,4 @@
-package com.NextOne.Challenge3.Services.exceptions;
+package com.NextOne.Challenge3.infra.exceptions;
 
 
 import org.springframework.validation.FieldError;
